@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:football_shop/widgets/left_drawer.dart';
 import 'package:football_shop/widgets/shop_card.dart';
+import 'package:provider/provider.dart';
+import 'package:football_shop/screens/login.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 
 class MyHomePage extends StatelessWidget {
     MyHomePage({super.key});
@@ -13,24 +16,55 @@ class MyHomePage extends StatelessWidget {
     ItemHomepage("All Products", Icons.list_rounded, Colors.blue),
     ItemHomepage("My Products", Icons.inventory_2_rounded, Colors.green),
     ItemHomepage("Create Product", Icons.add_box_rounded, Colors.red),
+
     ];
 
     @override
     Widget build(BuildContext context) {
+      final request = context.watch<CookieRequest>();
     // Scaffold menyediakan struktur dasar halaman dengan AppBar dan body.
     return Scaffold(
       // AppBar adalah bagian atas halaman yang menampilkan judul.
       appBar: AppBar(
-        // Judul aplikasi "Football Shop" dengan teks putih dan tebal.
         title: const Text(
-          'Football Shop',
+          'main',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-        // Warna latar belakang AppBar diambil dari skema warna tema aplikasi.
         backgroundColor: Theme.of(context).colorScheme.primary,
+        actions: [
+          TextButton(
+            onPressed: () async {
+              final response = await request.logout("http://localhost:8000/auth/logout/");
+              String message = response["message"];
+              if (context.mounted) {
+                if (response['status']) {
+                  String uname = response["username"];
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("$message See you again, $uname.")),
+                  );
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(message)),
+                  );
+                }
+              }
+            },
+            child: const Text(
+              "Logout",
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
       ),
       drawer: LeftDrawer(),
       // Body halaman dengan padding di sekelilingnya.
@@ -63,7 +97,7 @@ class MyHomePage extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.only(top: 16.0),
                     child: Text(
-                      'Selamat datang di Football Shop!',
+                      'Welcome to Your Best Football Online Shop!',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18.0,

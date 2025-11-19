@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:football_shop/screens/menu.dart';
 import 'package:football_shop/screens/products_form.dart';
+import 'package:football_shop/screens/product_entry_list.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -12,12 +13,12 @@ class LeftDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.lightBlue,
+              color: Colors.green,
             ),
             child: Column(
               children: [
                 Text(
-                  'Football Shop',
+                  'main',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
@@ -26,7 +27,7 @@ class LeftDrawer extends StatelessWidget {
                   ),
                 ),
                 Padding(padding: EdgeInsets.all(10)),
-                Text("Seluruh produk sepak bola yang paling lengkap dan trendy ada di sini!",
+                Text("Welcome to Your Best Football Online Shop! Trendy Football Product",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 15,
@@ -59,6 +60,16 @@ class LeftDrawer extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => const ProductsFormPage(),
                 )
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.shopping_bag_rounded),
+            title: const Text('Product List'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProductEntryListPage()),
               );
             },
           ),

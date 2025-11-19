@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:football_shop/screens/products_form.dart';
+import 'package:football_shop/screens/product_entry_list.dart';
 
 class ItemHomepage {
  final String name;
@@ -18,6 +19,7 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Material(
       // Menentukan warna latar belakang dari warna kartu.
       color: item.color,
@@ -26,7 +28,7 @@ class ItemCard extends StatelessWidget {
 
       child: InkWell(
         // Aksi ketika kartu ditekan.
-        onTap: () {
+        onTap: () async {
           // Menampilkan pesan SnackBar saat kartu ditekan.
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -39,6 +41,21 @@ class ItemCard extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const ProductsFormPage()),
+              );
+            }
+            // Navigate ke route product list yang sesuai
+            else if (item.name == "All Products") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProductEntryListPage(showOnlyMine: false)),
+              );
+            }
+            else if (item.name == "My Products") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProductEntryListPage(showOnlyMine: true),
+                ),
               );
             }
         },
